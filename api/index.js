@@ -1,9 +1,18 @@
 const express = require("express");
 const dataBaseConection = require("../src/db/dbConnection");
 const routes = require("../src/routes/index")
+const cors = require("cors")
 require('dotenv').config()
+
+
 const app = express()
 app.use(express.json())
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 routes(app);
 
 async function connectToDatabase() {
