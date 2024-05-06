@@ -30,6 +30,7 @@ class UserController {
       }
       const newUser = await user.create(req.body);
       res.status(201).json({ message: "New user created", newUser });
+      alert("New user created");
     } catch (erro) {
       res
         .status(500)
