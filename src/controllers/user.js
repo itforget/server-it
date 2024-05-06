@@ -1,5 +1,5 @@
 const user = require('../models/user');
-
+const bcrypt = require('bcrypt');
 class UserController {
   static async listUsers(req, res) {
     try {
