@@ -1,6 +1,6 @@
 const express = require("express");
-const dataBaseConection = require("./src/db/dbConnection");
-const routes = require("./src/routes/index")
+const dataBaseConection = require("../src/db/dbConnection");
+const routes = require("../src/routes/index")
 require('dotenv').config()
 const app = express()
 app.use(express.json())
