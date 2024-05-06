@@ -28,7 +28,12 @@ class UserController {
       if (emailExists) {
         return res.status(400).json({ message: "Email already exists" });
       }
-      const newUser = await user.create(req.body);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      const newUser = await user.create({
+        ...req.body,
+        password: hashedPassword,
+      });
       res.status(201).json({ message: "New user created", newUser });
       alert("New user created");
     } catch (erro) {
