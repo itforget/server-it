@@ -1,5 +1,5 @@
-const user = require('../models/user');
-const { generateToken } = require('../utils/token');
+const user = require("../models/user");
+const { generateToken } = require("../utils/token");
 
 class UserController {
   static async listUsers(req, res) {
@@ -13,15 +13,17 @@ class UserController {
     }
   }
 
-  static async listUserById (req, res) {
+  static async listUserById(req, res) {
     try {
       const id = req.params.id;
       const livroEncontrado = await user.findById(id);
       res.status(200).json(livroEncontrado);
     } catch (erro) {
-      res.status(500).json({ message: `${erro.message} - failed to list user` });
+      res
+        .status(500)
+        .json({ message: `${erro.message} - failed to list user` });
     }
-  };
+  }
 
   static async addUser(req, res) {
     try {
@@ -30,9 +32,8 @@ class UserController {
         return res.status(400).json({ message: "Email already exists" });
       }
       const newUser = await user.create(req.body);
-      res.status(201).json({ message: "New user created", newUser, token: generateToken({ id: user.id })  });
-      alert("New user created");
-      user.password = undefined
+      const token = generateToken({ id: newUser._id });
+      res.status(200).json({ message: "User created successfully" });
     } catch (erro) {
       res
         .status(500)
@@ -40,16 +41,18 @@ class UserController {
     }
   }
 
-  static async updateUser (req, res) {
+  static async updateUser(req, res) {
     try {
       const id = req.params.id;
       await user.findByIdAndUpdate(id, req.body);
       res.status(200).json({ message: "user update" });
     } catch (erro) {
-      res.status(500).json({ message: `${erro.message} - Failed to update user` });
+      res
+        .status(500)
+        .json({ message: `${erro.message} - Failed to update user` });
     }
   }
-  
+
   static async deleteUser(req, res) {
     try {
       const id = req.params.id;
@@ -61,8 +64,6 @@ class UserController {
         .json({ message: `${error.message} - Failed to delete user` });
     }
   }
-
-};
-
+}
 
 module.exports = UserController;
