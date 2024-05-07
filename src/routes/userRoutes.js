@@ -1,6 +1,7 @@
 const express = require('express')
 const UserController = require('../controllers/user')
 
+
 const routes = express.Router();
 
 routes.get('/users', UserController.listUsers)

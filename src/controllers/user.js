@@ -1,5 +1,6 @@
 const user = require('../models/user');
-const bcrypt = require('bcrypt');
+const { generateToken } = require('../utils/token');
+
 class UserController {
   static async listUsers(req, res) {
     try {
@@ -28,14 +29,10 @@ class UserController {
       if (emailExists) {
         return res.status(400).json({ message: "Email already exists" });
       }
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(req.body.password, salt);
-      const newUser = await user.create({
-        ...req.body,
-        password: hashedPassword,
-      });
-      res.status(201).json({ message: "New user created", newUser });
+      const newUser = await user.create(req.body);
+      res.status(201).json({ message: "New user created", newUser, token: generateToken({ id: user.id })  });
       alert("New user created");
+      user.password = undefined
     } catch (erro) {
       res
         .status(500)
